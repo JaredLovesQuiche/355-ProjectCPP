@@ -85,7 +85,10 @@ void AFunProjectCharacter::OnInteract()
 
 	if (GetWorld()->LineTraceSingleByChannel(hit, start, end, ECollisionChannel::ECC_Visibility))
 	{
-		if (IInteractableThing* obj = Cast<IInteractableThing>(hit.Actor));
+		if (IInteractableThing* obj = Cast<IInteractableThing>(hit.Actor))
+		{
+			obj->Interact();
+		}
 	}
 }
 
@@ -94,7 +97,6 @@ void AFunProjectCharacter::OnShoot()
 	// spawning objects
 	if (projectileToSpawn)
 	{
-		if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Emerald, TEXT("shooty haha"));
 		FVector pos = GetActorLocation() + GetActorForwardVector() * 100.0f;
 		FRotator rot = GetActorRotation();
 
