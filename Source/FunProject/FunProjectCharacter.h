@@ -19,6 +19,10 @@ class AFunProjectCharacter : public ACharacter
 public:
 	AFunProjectCharacter();
 
+	TArray<FString> Inventory;
+
+	bool IsPickingUp = false;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseTurnRate;
 
@@ -34,6 +38,10 @@ protected:
 	void MoveRight(float Value);
 	void TurnAtRate(float Rate);
 	void LookUpAtRate(float Rate);
+
+	void BeginPickup();
+	void EndPickup();
+	void ShowInventory();
 
 	void OnInteract();
 	void OnShoot();

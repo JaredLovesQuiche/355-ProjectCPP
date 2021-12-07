@@ -10,6 +10,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "DrawDebugHelpers.h"
 #include "InteractableThing.h"
+#include "Engine.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AFunProjectCharacter
@@ -61,8 +62,13 @@ void AFunProjectCharacter::SetupPlayerInputComponent(class UInputComponent* Play
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
+	PlayerInputComponent->BindAction("Shoot", IE_Released, this, &AFunProjectCharacter::OnShoot);
+
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFunProjectCharacter::BeginPickup);
+	PlayerInputComponent->BindAction("Interact", IE_Released, this, &AFunProjectCharacter::EndPickup);
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AFunProjectCharacter::OnInteract);
-	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &AFunProjectCharacter::OnShoot);
+
+	PlayerInputComponent->BindAction("ShowInventory", IE_Pressed, this, &AFunProjectCharacter::ShowInventory);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &AFunProjectCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AFunProjectCharacter::MoveRight);
@@ -89,6 +95,24 @@ void AFunProjectCharacter::OnInteract()
 		{
 			obj->Interact();
 		}
+	}
+}
+
+void AFunProjectCharacter::BeginPickup()
+{
+	IsPickingUp = true;
+}
+
+void AFunProjectCharacter::EndPickup()
+{
+	IsPickingUp = false;
+}
+
+void AFunProjectCharacter::ShowInventory()
+{
+	for (auto& Item : Inventory)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Item: %s"), *Item));
 	}
 }
 
